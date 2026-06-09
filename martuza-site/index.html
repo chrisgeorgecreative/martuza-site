@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chris Martuza — Service Design & Design Leadership</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f1d2e;
+    --ink-mid: #3a4f66;
+    --ink-light: #7a90a8;
+    --ink-faint: #dde4ed;
+    --cream: #f5f7fa;
+    --white: #ffffff;
+    --accent: #1b3f72;
+    --accent-light: #e4eaf5;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(250,249,246,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--ink-faint);
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .btn-outline {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 0.45rem 1rem;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-outline:hover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .btn-solid {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.45rem 1rem;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .btn-solid:hover { opacity: 0.85; }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--ink);
+    transform-origin: center;
+    transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+                opacity 0.25s ease,
+                width 0.3s ease;
+  }
+
+  .hamburger.open span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+    width: 0;
+  }
+  .hamburger.open span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: var(--cream);
+    border-bottom: 1px solid var(--ink-faint);
+    padding: 1.5rem clamp(1.5rem, 5vw, 4rem);
+    gap: 1.25rem;
+    z-index: 99;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .mobile-menu.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .mobile-menu a {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    text-decoration: none;
+  }
+
+  .mobile-menu .mobile-btns {
+    display: flex;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--ink-faint);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100svh;
+    padding: 120px clamp(1.5rem, 5vw, 4rem) 80px;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--cream);
+    z-index: 0;
+  }
+
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    right: -80px;
+    width: clamp(300px, 50vw, 560px);
+    height: clamp(300px, 50vw, 560px);
+    border-radius: 50%;
+    border: 1px solid var(--ink-faint);
+    opacity: 0.8;
+  }
+
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    right: 40px;
+    width: clamp(200px, 35vw, 400px);
+    height: clamp(200px, 35vw, 400px);
+    border-radius: 50%;
+    border: 1px solid var(--ink-faint);
+    opacity: 0.5;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(3.2rem, 8vw, 7rem);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-tagline {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-mid);
+    margin-bottom: 3rem;
+    max-width: 560px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-actions .btn-outline, .hero-actions .btn-solid {
+    font-size: 0.8rem;
+    padding: 0.7rem 1.5rem;
+  }
+
+  /* SECTION LAYOUT */
+  section {
+    padding: 100px clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--ink-light);
+  }
+
+  /* ABOUT */
+  .about {
+    background: var(--white);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(3rem, 6vw, 8rem);
+    align-items: start;
+    max-width: 1100px;
+  }
+
+  .about-left h2 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    color: var(--ink);
+  }
+
+  .about-left h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .about-body p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--ink-mid);
+    margin-bottom: 1.25rem;
+  }
+
+  .about-body p:last-child { margin-bottom: 0; }
+
+  .about-stats {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-top: 1px solid var(--ink-faint);
+    padding-top: 2.5rem;
+  }
+
+  .stat-item {}
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+
+  .about-right {
+    padding-top: 1rem;
+  }
+
+  .about-pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .pillar {
+    padding: 1.5rem;
+    border: 1px solid var(--ink-faint);
+    border-radius: 4px;
+    background: var(--cream);
+    transition: border-color 0.2s;
+  }
+
+  .pillar:hover { border-color: var(--accent); }
+
+  .pillar-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .pillar h3 {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .pillar p {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 1.6;
+  }
+
+  /* WORK */
+  .work {
+    background: var(--cream);
+  }
+
+  .work-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 1100px;
+  }
+
+  .work-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--ink);
+    max-width: 500px;
+  }
+
+  .work-header h2 em { font-style: italic; color: var(--accent); }
+
+  .case-studies {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    max-width: 1100px;
+    background: var(--ink-faint);
+    border: 1px solid var(--ink-faint);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .case-study {
+    background: var(--white);
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .case-study-header {
+    padding: 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    transition: background 0.2s;
+  }
+
+  .case-study-header:hover { background: var(--cream); }
+
+  .case-num {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--ink-faint);
+    line-height: 1;
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .case-meta {}
+
+  .case-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .case-title {
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .case-subtitle {
+    font-size: 0.88rem;
+    color: var(--ink-light);
+    line-height: 1.4;
+  }
+
+  .case-toggle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--ink-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    color: var(--ink-mid);
+    transition: background 0.2s, border-color 0.2s, transform 0.3s;
+  }
+
+  .case-study.open .case-toggle {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    transform: rotate(45deg);
+  }
+
+  .case-body {
+    display: none;
+    padding: 0 2.5rem 2.5rem;
+    padding-left: calc(2.5rem + 60px + 2rem);
+  }
+
+  .case-study.open .case-body { display: block; }
+
+  .case-body-inner {
+    border-top: 1px solid var(--ink-faint);
+    padding-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .case-section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 0.75rem;
+  }
+
+  .case-body p {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--ink-mid);
+    margin-bottom: 1rem;
+  }
+
+  .case-body p:last-child { margin-bottom: 0; }
+
+  .case-outcomes {
+    list-style: none;
+  }
+
+  .case-outcomes li {
+    font-size: 0.92rem;
+    color: var(--ink-mid);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--ink-faint);
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .case-outcomes li:last-child { border-bottom: none; }
+
+  .case-outcomes li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.05em;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 60px clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.88rem;
+    color: rgba(250,249,246,0.5);
+    margin-bottom: 2rem;
+    font-style: italic;
+    font-family: var(--serif);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end;
+  }
+
+  .footer-links a {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(250,249,246,0.6);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .footer-links a:hover { color: var(--cream); }
+
+  .footer-links a svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(250,249,246,0.1);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    font-size: 0.78rem;
+    color: rgba(250,249,246,0.3);
+    max-width: 1100px;
+  }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-up:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up:nth-child(3) { transition-delay: 0.2s; }
+  .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+
+    .case-study-header {
+      grid-template-columns: auto 1fr auto;
+      gap: 1rem;
+      padding: 1.5rem;
+    }
+
+    .case-num { font-size: 2rem; width: 40px; }
+    .case-title { font-size: 1.1rem; }
+
+    .case-body {
+      padding: 0 1.5rem 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .case-body-inner {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .footer-inner { grid-template-columns: 1fr; }
+    .footer-links { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 1rem; }
+
+    .work-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Chris Martuza</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="https://www.linkedin.com/in/chrismartuza/" target="_blank">LinkedIn</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="resume.pdf" class="btn-outline" download>Resume</a>
+    <a href="https://www.linkedin.com/in/chrismartuza/" class="btn-solid" target="_blank">Connect</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#work" onclick="closeMobile()">Work</a>
+  <a href="https://www.linkedin.com/in/chrismartuza/" target="_blank">LinkedIn ↗</a>
+  <div class="mobile-btns">
+    <a href="resume.pdf" class="btn-outline" download>Resume</a>
+    <a href="https://www.linkedin.com/in/chrismartuza/" class="btn-solid" target="_blank">Connect</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Service Design &amp; Design Leadership</p>
+    <h1 class="hero-title">Chris<br><em>Martuza</em></h1>
+    <p class="hero-tagline">"Know the who.<br>Design the how."</p>
+    <div class="hero-actions">
+      <a href="#work" class="btn-solid">View Case Studies</a>
+      <a href="#about" class="btn-outline">About Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div class="about-left fade-up">
+      <h2>Designing services<br>that <em>actually</em><br>serve people</h2>
+      <div class="about-stats">
+        <div class="stat-item">
+          <div class="stat-num">15+</div>
+          <div class="stat-label">Years in Experience Design</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Customer Stories Mapped</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">XFN</div>
+          <div class="stat-label">Teams Led & Facilitated</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">E2E</div>
+          <div class="stat-label">End-to-End Service Vision</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-right fade-up">
+      <div class="about-body" style="margin-bottom: 2.5rem;">
+        <p>I'm a service designer and design leader with deep roots in storytelling and customer experience. My work sits at the intersection of people, process, and possibility — translating complex organizational challenges into clear, human-centered service visions that teams can actually build toward.</p>
+        <p>My philosophy is simple: before you can design the how, you have to deeply understand the who. That means listening first, mapping what's true, then building bridges between what customers experience and what organizations can deliver.</p>
+        <p>Currently focused on digital transformation in the energy sector, bringing enterprise-scale service design discipline — blueprinting, journey management, cross-channel experience strategy — to problems that affect millions of customers.</p>
+      </div>
+
+      <div class="about-pillars">
+        <div class="pillar fade-up">
+          <span class="pillar-icon">◎</span>
+          <h3>Service Design</h3>
+          <p>End-to-end blueprinting, service ecosystem mapping, and frontstage/backstage alignment across complex organizations.</p>
+        </div>
+        <div class="pillar fade-up">
+          <span class="pillar-icon">◈</span>
+          <h3>Design Leadership</h3>
+          <p>Building and growing design teams, establishing practice standards, and creating the conditions for great design work to happen.</p>
+        </div>
+        <div class="pillar fade-up">
+          <span class="pillar-icon">◇</span>
+          <h3>Facilitation & Research</h3>
+          <p>Human-centered research, co-design workshops, and facilitation that unifies diverse perspectives into shared direction.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="work-header fade-up">
+    <div>
+      <div class="section-label">Selected Work</div>
+      <h2>Recent<br><em>case studies</em></h2>
+    </div>
+  </div>
+
+  <div class="case-studies">
+
+    <!-- CASE 1 -->
+    <div class="case-study" id="case1">
+      <div class="case-study-header" onclick="toggleCase('case1')">
+        <div class="case-num">01</div>
+        <div class="case-meta">
+          <div class="case-tag">Experience Management · Service Design</div>
+          <div class="case-title">Journey & Experience Management</div>
+          <div class="case-subtitle">Unifying all CX documentation under one umbrella for rapid indexing and insight generation</div>
+        </div>
+        <div class="case-toggle">+</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-inner">
+          <div>
+            <div class="case-section-label">The Challenge</div>
+            <p>Customer experience documentation was fragmented across teams, tools, and formats — journey maps in Miro, service blueprints in decks, research insights in spreadsheets. No single source of truth meant that teams were duplicating effort, drawing inconsistent conclusions, and struggling to connect the dots between touchpoints and business outcomes.</p>
+            <p>The organization needed a way to make its accumulated CX knowledge findable, usable, and alive — not archived and forgotten.</p>
+            <div class="case-section-label" style="margin-top: 1.5rem;">My Role</div>
+            <p>Led the strategic design and facilitation effort to define what an integrated experience management system would look like — from taxonomy to tooling to team adoption. Facilitated cross-functional working sessions to align stakeholders on a shared documentation framework.</p>
+          </div>
+          <div>
+            <div class="case-section-label">Outcomes & Impact</div>
+            <ul class="case-outcomes">
+              <li>Established a unified CX documentation taxonomy adopted across product, design, and customer ops teams</li>
+              <li>Reduced time-to-insight for new project onboarding by surfacing relevant journey artifacts in a single indexed repository</li>
+              <li>Enabled cross-functional teams to identify experience gaps and overlaps that were previously invisible</li>
+              <li>Created a living system — not a static archive — with governance model to keep documentation current</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 2 -->
+    <div class="case-study" id="case2">
+      <div class="case-study-header" onclick="toggleCase('case2')">
+        <div class="case-num">02</div>
+        <div class="case-meta">
+          <div class="case-tag">Strategic Design · Digital Experience</div>
+          <div class="case-title">The Customer Journey Index</div>
+          <div class="case-subtitle">A comprehensive outlook for how all common customer experiences will be supported across digital channels</div>
+        </div>
+        <div class="case-toggle">+</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-inner">
+          <div>
+            <div class="case-section-label">The Challenge</div>
+            <p>Digital transformation in a large organization means more than launching new channels — it requires clarity about which experiences will be supported, how, and when. Without a deliberate planning framework, digital investments risk solving the wrong problems or creating new inconsistencies.</p>
+            <p>The organization needed a strategic map of its intended digital experience landscape: a "north star" document that could coordinate roadmap decisions across product, engineering, and customer experience teams.</p>
+            <div class="case-section-label" style="margin-top: 1.5rem;">My Role</div>
+            <p>Designed and led the creation of the Customer Journey Index — a structured artifact that catalogues all major customer experience scenarios, maps them to digital channel coverage, and identifies gaps, priorities, and interdependencies. Drove cross-functional alignment across multiple business units.</p>
+          </div>
+          <div>
+            <div class="case-section-label">Outcomes & Impact</div>
+            <ul class="case-outcomes">
+              <li>Delivered the organization's first comprehensive view of digital experience coverage across all major customer scenarios</li>
+              <li>Surfaced critical gaps between customer expectations and planned digital capabilities, informing roadmap prioritization</li>
+              <li>Became a shared reference artifact used by product, UX, and strategy teams to align investment decisions</li>
+              <li>Established a repeatable framework for ongoing experience planning as digital capabilities evolve</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 3 -->
+    <div class="case-study" id="case3">
+      <div class="case-study-header" onclick="toggleCase('case3')">
+        <div class="case-num">03</div>
+        <div class="case-meta">
+          <div class="case-tag">Service Blueprint · End-to-End Design</div>
+          <div class="case-title">Meter to Cash Service Blueprint</div>
+          <div class="case-subtitle">A comprehensive portrait of the end-to-end front and backstage experience from meter install to first payment</div>
+        </div>
+        <div class="case-toggle">+</div>
+      </div>
+      <div class="case-body">
+        <div class="case-body-inner">
+          <div>
+            <div class="case-section-label">The Challenge</div>
+            <p>The meter-to-cash journey — from initial meter installation through account activation, billing, and first payment receipt — touches dozens of teams, systems, and customer interactions. Despite being foundational to the business, it had never been fully documented as a single coherent experience.</p>
+            <p>Siloed process maps existed in individual departments, but no one had the full picture. This made it nearly impossible to diagnose failure points, design improvements, or onboard new team members with a clear understanding of the whole.</p>
+            <div class="case-section-label" style="margin-top: 1.5rem;">My Role</div>
+            <p>Led a comprehensive research and blueprinting effort spanning multiple business functions. Conducted stakeholder interviews and process deep-dives to surface both the customer-facing journey and the internal operations supporting it. Synthesized findings into a layered service blueprint capturing frontstage interactions, backstage processes, and supporting systems.</p>
+          </div>
+          <div>
+            <div class="case-section-label">Outcomes & Impact</div>
+            <ul class="case-outcomes">
+              <li>Produced the organization's first end-to-end service blueprint spanning the full Meter-to-Cash lifecycle</li>
+              <li>Identified previously undocumented handoff failures and friction points across departmental boundaries</li>
+              <li>Became the foundational reference for a multi-year digital transformation initiative targeting the onboarding experience</li>
+              <li>Used as an onboarding tool for new employees and a shared language artifact for cross-functional project teams</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Chris Martuza</div>
+      <div class="footer-tagline">"Know the who. Design the how."</div>
+      <p style="font-size:0.85rem; color:rgba(250,249,246,0.5); line-height:1.7; max-width:420px;">Service Designer and Design Leader helping organizations understand their customers deeply and build services that actually serve them.</p>
+    </div>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/chrismartuza/" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="resume.pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="12" x2="12" y2="18"/><polyline points="9,15 12,18 15,15"/></svg>
+        Download Resume
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Chris Martuza · Service Design & Design Leadership
+  </div>
+</footer>
+
+<script>
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+
+  // Case study accordion
+  function toggleCase(id) {
+    const el = document.getElementById(id);
+    const wasOpen = el.classList.contains('open');
+    document.querySelectorAll('.case-study').forEach(c => c.classList.remove('open'));
+    if (!wasOpen) el.classList.add('open');
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        const offset = 70;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

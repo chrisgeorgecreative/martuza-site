@@ -1,0 +1,11 @@
+{
+  "name": "martuza-site",
+  "version": "1.0.0",
+  "description": "Chris Martuza personal website with live reload",
+  "scripts": {
+    "start": "browser-sync start --server --files '*.html, *.css, *.js' --index 'index.html' --no-notify"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.0"
+  }
+}
