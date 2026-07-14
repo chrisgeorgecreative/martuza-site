@@ -12,7 +12,8 @@ martuza-site/
 ├── about.html
 ├── contact.html
 ├── partials/
-│   └── header.html     # shared header — edit once, changes everywhere
+│   ├── header.html     # shared header — edit once, changes everywhere
+│   └── footer.html     # shared footer — same deal
 ├── css/styles.css      # all styles (design tokens at the top)
 ├── js/main.js          # intro fade-in + shared-include loader
 ├── assets/images/      # case-study visuals go here
@@ -21,13 +22,15 @@ martuza-site/
 └── docs/               # GENERATED — what GitHub Pages serves (do not edit by hand)
 ```
 
-## Shared header (and other partials)
+## Shared partials (header, footer)
 
-The header lives in one place: `partials/header.html`. Each page just has a
-mount point:
+The header and footer each live in one place — `partials/header.html` and
+`partials/footer.html`. Each page just has a mount point:
 
 ```html
 <div data-include="header"></div>
+...
+<div data-include="footer"></div>
 ```
 
 - **Local dev:** `js/main.js` fetches the partial and drops it in on page load.

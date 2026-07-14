@@ -16,7 +16,7 @@ const { minify: minifyHTML } = require("html-minifier-terser");
 const ROOT = __dirname;
 const OUT = path.join(ROOT, "docs");
 const PAGES = ["index.html", "about.html", "contact.html"];
-const PARTIALS = ["header"];
+const PARTIALS = ["header", "footer"];
 
 function read(p) {
   return fs.readFileSync(path.join(ROOT, p), "utf8");
