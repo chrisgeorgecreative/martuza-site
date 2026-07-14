@@ -4,7 +4,7 @@
   "description": "Personal site for Chris Martuza (Stuzie) — service designer & design leader.",
   "private": true,
   "scripts": {
-    "dev": "browser-sync start --server . --files \"*.html, partials/*.html, css/*.css, js/*.js\" --no-notify --startPath index.html",
+    "dev": "browser-sync start --server . --files \"*.html,partials/*.html,css/*.css,js/*.js\" --no-notify --startPath index.html",
     "build": "node build.js"
   },
   "devDependencies": {
