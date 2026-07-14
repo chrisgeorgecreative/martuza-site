@@ -84,6 +84,20 @@ async function build() {
 
   copyDir(path.join(ROOT, "assets"), path.join(OUT, "assets"));
   copyDir(path.join(ROOT, "partials"), path.join(OUT, "partials"));
+
+  const STATIC = [
+    "favicon.ico",
+    "favicon.svg",
+    "apple-touch-icon.png",
+    "icon-192.png",
+    "icon-512.png",
+    "site.webmanifest",
+  ];
+  for (const f of STATIC) {
+    const src = path.join(ROOT, f);
+    if (fs.existsSync(src)) fs.copyFileSync(src, path.join(OUT, f));
+  }
+
   fs.writeFileSync(path.join(OUT, ".nojekyll"), "");
 
   console.log("Build complete -> docs/");
