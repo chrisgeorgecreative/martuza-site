@@ -239,9 +239,9 @@ html.intro .fade.d4 { animation-delay: 0.34s; }
   .hero-title { max-width: 100%; }
   .about-hero {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 0;
   }
-  .about-photo { max-width: 300px; }
+  .about-photo { display: none; }
   .case {
     grid-template-columns: 1fr;
     gap: 22px;
