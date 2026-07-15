@@ -318,16 +318,17 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
 }
 .cs-hero { aspect-ratio: 16 / 9; margin: 0 0 72px; }
-.cs-figure { aspect-ratio: 16 / 10; margin: 0 0 64px; }
-.cs-section { max-width: 62ch; margin: 0 0 64px; }
+.cs-figure { aspect-ratio: 16 / 10; margin: 0 0 32px; }
+.cs-section { margin: 0 0 64px; }
 .cs-section h2 {
   font-family: var(--display);
   font-weight: 700;
   font-size: clamp(26px, 3.4vw, 30px);
   letter-spacing: -0.01em;
-  margin: 0 0 18px;
+  margin: 0 0 24px;
+  max-width: 62ch;
 }
-.cs-section p { color: var(--slate); font-size: clamp(17px, 2.2vw, 19px); line-height: 1.7; margin: 0 0 18px; }
+.cs-section p { color: var(--slate); font-size: clamp(17px, 2.2vw, 19px); line-height: 1.7; margin: 0 0 18px; max-width: 62ch; }
 .cs-section em { color: var(--slate-mute); }
 .cs-metrics { display: flex; gap: 64px; flex-wrap: wrap; margin: 28px 0 0; }
 .cs-metric { display: flex; flex-direction: column; }
