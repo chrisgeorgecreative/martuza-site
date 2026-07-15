@@ -15,7 +15,7 @@ const { minify: minifyHTML } = require("html-minifier-terser");
 
 const ROOT = __dirname;
 const OUT = path.join(ROOT, "docs");
-const PAGES = ["index.html", "about.html"];
+const PAGES = ["index.html", "about.html", "customer-journey-index.html"];
 const PARTIALS = ["header", "footer"];
 
 function read(p) {

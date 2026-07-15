@@ -80,5 +80,10 @@ nested-folder 404 issue.
 - **Fonts:** Space Grotesk (headings), DM Sans (body), Cormorant Garamond
   (serif accent) — from Google Fonts.
 - **No hamburger:** the two nav links stay visible inline at every width.
-- **Adding a case study:** copy an `article.case` block in `index.html` and
-  drop its image into `assets/images/`.
+- **Case study pages:** each selected work has its own page built from a shared
+  template — see `customer-journey-index.html`. To add another: copy that file,
+  rename it (e.g. `meter-to-cash-service-blueprint.html`), edit the content,
+  point the matching `article.case` "See more" link in `index.html` at it, set
+  its "Next case study" link, and add the filename to the `PAGES` list in
+  `build.js`. Case-study images go in `assets/images/`; the `.cs-hero` /
+  `.cs-figure` placeholders take an `<img>` the same way the About photo does.
