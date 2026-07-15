@@ -317,16 +317,24 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: center;
 }
-.cs-hero { aspect-ratio: 16 / 9; margin: 0 0 72px; }
-.cs-figure { aspect-ratio: 16 / 10; margin: 0 0 32px; }
-.cs-section { margin: 0 0 64px; }
+.cs-hero { aspect-ratio: 12 / 5; margin: 0 0 72px; }
+.cs-figure { aspect-ratio: 3 / 1; margin: 0 0 28px; }
+.cs-section { margin: 0 0 72px; }
 .cs-section h2 {
   font-family: var(--display);
   font-weight: 700;
   font-size: clamp(26px, 3.4vw, 30px);
   letter-spacing: -0.01em;
-  margin: 0 0 24px;
+  margin: 0 0 18px;
   max-width: 62ch;
+}
+.cs-blurb {
+  color: var(--slate-light);
+  font-size: clamp(19px, 2.5vw, 22px);
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0 0 28px;
+  max-width: 60ch;
 }
 .cs-section p { color: var(--slate); font-size: clamp(17px, 2.2vw, 19px); line-height: 1.7; margin: 0 0 18px; max-width: 62ch; }
 .cs-section em { color: var(--slate-mute); }
