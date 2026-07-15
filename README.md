@@ -9,8 +9,8 @@ into `docs/` for the fastest possible page load on GitHub Pages.
 ```
 martuza-site/
 ├── index.html          # home — hero + selected work
-├── about.html
-├── contact.html
+├── about.html          # about — bio, photo, and contact CTA (#contact anchor)
+├── contact.html        # redirect stub → about.html#contact (kept so old links work)
 ├── partials/
 │   ├── header.html     # shared header — edit once, changes everywhere
 │   └── footer.html     # shared footer — same deal

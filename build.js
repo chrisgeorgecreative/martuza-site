@@ -15,7 +15,7 @@ const { minify: minifyHTML } = require("html-minifier-terser");
 
 const ROOT = __dirname;
 const OUT = path.join(ROOT, "docs");
-const PAGES = ["index.html", "about.html", "contact.html"];
+const PAGES = ["index.html", "about.html"];
 const PARTIALS = ["header", "footer"];
 
 function read(p) {
@@ -86,6 +86,7 @@ async function build() {
   copyDir(path.join(ROOT, "partials"), path.join(OUT, "partials"));
 
   const STATIC = [
+    "contact.html",
     "favicon.ico",
     "favicon.svg",
     "apple-touch-icon.png",
