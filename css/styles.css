@@ -86,6 +86,16 @@ a { color: inherit; text-decoration: none; }
 }
 .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--ink); }
 
+/* HOME BACKGROUND — faint dot field + constellation (behind main content only) */
+.home {
+  background-image:
+    url("assets/constellation.svg"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='12' cy='20' r='1' fill='%231C3860'/%3E%3Ccircle cx='44' cy='48' r='1' fill='%231C3860'/%3E%3Ccircle cx='34' cy='9' r='1' fill='%231C3860'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, repeat;
+  background-position: top center, 0 0;
+  background-size: 100% auto, 60px 60px;
+}
+
 /* HERO */
 .hero { padding: 96px 0 72px; }
 .eyebrow {
