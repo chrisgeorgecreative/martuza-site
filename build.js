@@ -17,6 +17,7 @@ const ROOT = __dirname;
 const OUT = path.join(ROOT, "docs");
 const PAGES = ["index.html", "about.html", "customer-journey-index.html"];
 const PARTIALS = ["header", "footer"];
+const HEAD_SLOT = /<div data-include="head-common"><\/div>/;
 
 function read(p) {
   return fs.readFileSync(path.join(ROOT, p), "utf8");
@@ -54,11 +55,13 @@ async function build() {
   const cssMin = new CleanCSS({ level: 2 }).minify(read("css/styles.css")).styles;
   const jsResult = await minifyJS(read("js/main.js"));
   const jsMin = jsResult.code;
+  const headCommon = read(path.join("partials", "head-common.html")).trim();
 
   for (const page of PAGES) {
     let html = read(page);
 
     html = inlinePartials(html);
+    html = html.replace(HEAD_SLOT, headCommon);
     html = html.replace(
       /<link rel="stylesheet" href="css\/styles\.css">/,
       `<style>${cssMin}</style>`
